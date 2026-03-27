@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { assets } from '../assets/assets'
 import { NavLink, useNavigate } from 'react-router-dom'
+import ProfileCardModal from './ProfileCardModal'
 
 const Navbar = () => {
 
@@ -9,6 +10,7 @@ const Navbar = () => {
   const [showMenu, setShowMenu] = useState(false);
   const [token, setToken] = useState(true);//if we have token we will be logged in otherwise not
   const [showProfile, setShowProfile] = useState(false);
+  const [showProfileCard, setShowProfileCard] = useState(false);
 
   // Mock user data - in a real app, this would come from context/API
   const userData = {
@@ -138,7 +140,7 @@ const Navbar = () => {
             {token ? (
               <div className='relative'>
                 <button
-                  onClick={() => { navigate('/profile'); }}
+                  onClick={() => setShowProfileCard(true)}
                   className='flex items-center gap-2 sm:gap-3 p-2 rounded-xl hover:bg-gray-50 transition-colors duration-200 group'
                 >
                   <div className='relative'>
@@ -342,10 +344,10 @@ const Navbar = () => {
             </NavLink>
           </nav>
           
-          {token ? (
+          {token && (
             <div className='p-4 sm:p-6 border-t border-gray-100 space-y-3 bg-white'>
               <button 
-                onClick={() => { navigate('/profile'); setShowMenu(false); }}
+                onClick={() => { setShowProfileCard(true); setShowMenu(false); }}
                 className='w-full px-4 py-3 bg-gradient-to-r from-pink-500 to-pink-600 text-white rounded-xl font-semibold hover:shadow-lg transition-all duration-300 flex items-center justify-center gap-3'
               >
                 <div className='w-6 h-6 bg-white/20 rounded-full flex items-center justify-center'>
@@ -410,6 +412,13 @@ const Navbar = () => {
         }
         .animate-fade-in { animation: fade-in 0.3s ease-out; }
       `}</style>
+
+      {/* Profile Card Modal */}
+      <ProfileCardModal 
+        isOpen={showProfileCard} 
+        onClose={() => setShowProfileCard(false)} 
+        userData={userData}
+      />
     </nav>
   )
 }

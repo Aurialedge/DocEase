@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { assets } from '../assets/assets'
+import SimpleProfileCard from '../stylingcomp/SimpleProfileCard'
 
 const Profile = () => {
 
@@ -17,11 +18,41 @@ const Profile = () => {
   })
 
   const [isEdit, setIsEdit] = useState(false)
+  const [showCard, setShowCard] = useState(true) // Show card by default when page loads
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-6">
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-6 relative">
       
-      <div className="w-full max-w-3xl bg-white rounded-2xl shadow-lg p-8 space-y-6">
+      {/* Profile Card Overlay */}
+      {showCard && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+          <div className="relative">
+            {/* Close Button */}
+            <button
+              onClick={() => setShowCard(false)}
+              className="absolute -top-12 right-0 z-10 p-2 bg-white/10 backdrop-blur-md rounded-full text-white hover:bg-white/20 transition-colors duration-200 border border-white/20"
+            >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+            
+            {/* Click instruction */}
+            <div className="absolute -bottom-12 left-1/2 transform -translate-x-1/2 text-center">
+              <p className="text-white/80 text-sm">Click on profile image to view details</p>
+            </div>
+            
+            {/* Profile Card */}
+            <div>
+              <SimpleProfileCard userData={userData} onImageClick={() => setShowCard(false)} />
+            </div>
+          </div>
+        </div>
+      )}
+      
+      <div className={`w-full max-w-3xl bg-white rounded-2xl shadow-lg p-8 space-y-6 transition-opacity duration-500 ${
+        showCard ? 'opacity-30 pointer-events-none' : 'opacity-100'
+      }`}>
         
         {/* Profile Image */}
         <div className="flex flex-col items-center gap-4">
